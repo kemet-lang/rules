@@ -9,8 +9,9 @@
 
 // ╔════════════════════════════════════════ PACK ════════════════════════════════════════╗
 
-    import * as syntax from '@je-es/syntax';
-    import { lexerRules } from './conf/lexer_rules';
+    import * as syntax          from '@je-es/syntax';
+    import { lexerRules }       from './conf/lexer_rules';
+    import { lspConfig }        from './conf/lsp_rules';
     import { parserRules, parserSettings } from './conf/parser_rules';
 
 // ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -24,6 +25,7 @@
             version  : '0.0.1',
             lexer    : lexerRules,
             parser   : parserRules,
+            lsp      : lspConfig,
             settings : parserSettings
         } as syntax.SyntaxConfig
     );
