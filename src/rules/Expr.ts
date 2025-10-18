@@ -1025,7 +1025,7 @@
                     ParserLib.token('false'),
 
                     // String
-                    ParserLib.token('str'),
+                    ParserLib.token('slice'),
 
                     // Character
                     ParserLib.token('char'),
@@ -1072,8 +1072,8 @@
                                     expr = AST.ExprNode.asBool(token.span, token.value === 'true');
                                     break;
 
-                                // String
-                                case 'str':
+                                // Slice
+                                case 'slice':
                                     expr = AST.ExprNode.asString(token.span, token.value ?? '');
                                     break;
 

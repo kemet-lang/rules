@@ -348,7 +348,7 @@
                     // from
                     ParserLib.optional(ParserLib.token('from')),
                     // path
-                    ParserLib.optional(ParserLib.token('str')),
+                    ParserLib.optional(ParserLib.token('slice')),
                 ),
                 {
                     build: (data: ParserLib.Result) => {
@@ -624,7 +624,7 @@
             ParserLib.createRule('TestStmt',
                 ParserLib.seq(
                     ParserLib.token('test'),
-                    ParserLib.optional(ParserLib.token('str')),
+                    ParserLib.optional(ParserLib.token('slice')),
                     ParserLib.optional(ParserLib.rule('BlockStmt')),
                 ),
                 {

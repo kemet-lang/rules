@@ -14,7 +14,7 @@ var lexerRules = {
   oct: /0o[0-7]+/,
   hex: /0x[0-9a-fA-F]+/,
   dec: /[0-9]+/,
-  str: { match: /"(?:[^"\\]|\\.)*"/, value: (text) => text.slice(1, -1) },
+  slice: { match: /"(?:[^"\\]|\\.)*"/, value: (text) => text.slice(1, -1) },
   char: { match: /'(?:[^'\\]|\\.)*'/, value: (text) => text.slice(1, -1) },
   true: "true",
   false: "false",
@@ -1344,7 +1344,7 @@ var Expr = [
       ParserLib.token("true"),
       ParserLib.token("false"),
       // String
-      ParserLib.token("str"),
+      ParserLib.token("slice"),
       // Character
       ParserLib.token("char"),
       // Null/Undefined
@@ -1384,8 +1384,8 @@ var Expr = [
             case "false":
               expr = AST.ExprNode.asBool(token5.span, token5.value === "true");
               break;
-            // String
-            case "str":
+            // Slice
+            case "slice":
               expr = AST.ExprNode.asString(token5.span, (_a = token5.value) != null ? _a : "");
               break;
             // Character
@@ -2227,7 +2227,7 @@ var Stmt = [
       // from
       ParserLib2.optional(ParserLib2.token("from")),
       // path
-      ParserLib2.optional(ParserLib2.token("str"))
+      ParserLib2.optional(ParserLib2.token("slice"))
     ),
     {
       build: (data) => {
@@ -2423,7 +2423,7 @@ var Stmt = [
     "TestStmt",
     ParserLib2.seq(
       ParserLib2.token("test"),
-      ParserLib2.optional(ParserLib2.token("str")),
+      ParserLib2.optional(ParserLib2.token("slice")),
       ParserLib2.optional(ParserLib2.rule("BlockStmt"))
     ),
     {

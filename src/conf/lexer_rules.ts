@@ -28,7 +28,7 @@
         oct             : /0o[0-7]+/,
         hex             : /0x[0-9a-fA-F]+/,
         dec             : /[0-9]+/,
-        str             : { match: /"(?:[^"\\]|\\.)*"/, value: (text: string) => text.slice(1, -1) },
+        slice           : { match: /"(?:[^"\\]|\\.)*"/, value: (text: string) => text.slice(1, -1) },
         char            : { match: /'(?:[^'\\]|\\.)*'/, value: (text: string) => text.slice(1, -1) },
         true            : 'true',
         false           : 'false',

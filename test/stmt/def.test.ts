@@ -35,16 +35,16 @@
 
             // Public define
             {
-                input: 'pub def MyString = str',
+                input: 'pub def MyString = slice',
                 success: true,
                 output: AST.StmtNode.asDefine(
-                    { start: 0, end: 22 },
+                    { start: 0, end: 24 },
                     {
                         kind: 'Public',
                         span: { start: 0, end: 3 },
                     },
                     AST.IdentNode.create({ start: 8, end: 16 }, 'MyString'),
-                    AST.TypeNode.asIdentifier({ start: 19, end: 22 }, 'str')
+                    AST.TypeNode.asIdentifier({ start: 19, end: 24 }, 'slice')
                 )
             },
 
