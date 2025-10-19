@@ -10,6 +10,8 @@
 
     - fix : in `lsp_rules.ts` fix wrong examples/description/signature.
 
+    - fix : paren type
+
 - ## Current
 
 - ## Later

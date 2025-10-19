@@ -3479,7 +3479,7 @@ var Type = [
     {
       build: (data) => {
         const seq_array = data.getSequenceResult();
-        const parenType = AST3.ParenTypeNode.create(data.span, seq_array[1].getCustomData());
+        const parenType = AST3.TypeNode.asParen(data.span, seq_array[1].getCustomData());
         return ParserLib3.Result.createAsCustom("passed", "paren-type", parenType, data.span);
       },
       errors: [

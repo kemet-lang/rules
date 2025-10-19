@@ -801,7 +801,7 @@
                 {
                     build: (data: ParserLib.Result) => {
                         const seq_array = data.getSequenceResult()!;
-                        const parenType = AST.ParenTypeNode.create(data.span, seq_array[1].getCustomData()! as AST.TypeNode);
+                        const parenType = AST.TypeNode.asParen(data.span, seq_array[1].getCustomData()! as AST.TypeNode);
                         return ParserLib.Result.createAsCustom('passed', 'paren-type', parenType, data.span);
                     },
 
