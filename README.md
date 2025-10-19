@@ -44,8 +44,8 @@
             | void                      # e.g. `fn x() -> void { /* no return stmt requierd */ }`
             | err                       # e.g. `def e = errse t{ e1, ... }; let x : err = e.e1`
 
-            | i[0-65535], isize         # Signed    | isize = 64 bits
-            | u[0-65535], usize         # Unsigned  | usize = 64 bits
+            | i[0-65535]                # Signed
+            | u[0-65535]                # Unsigned
 
             | f[16,32,64,80,128]        # Float
         ```
@@ -120,8 +120,11 @@
 
         ```bash
         Alias
-            | str                       # []u8
+            | slice                     # []u8
             | char                      # u8
+            | cpoint                    # u21
+            | usize                     # u64
+            | isize                     # i64
         ```
 
     2. ### Expr
