@@ -167,7 +167,29 @@
                     undefined,
                     AST.StmtNode.asBlock({ start: 39, end: 41 }, [])
                 )
-            }
+            },
+
+            // will never happend after this update.
+            // ! without error type
+            {
+                name: '! without error type',
+                input: 'fn main( ) -> !void {}',
+                success: true,
+                output: AST.StmtNode.asFunc(
+                    { start: 0, end: 22 },
+                    {
+                        kind: 'Private',
+                        span: undefined,
+                    },
+                    { kind: 'Runtime', },
+                    false,
+                    AST.IdentNode.create({ start: 3, end: 7 }, 'main'),
+                    [],
+                    AST.TypeNode.asErr(),
+                    AST.TypeNode.asVoid({ start: 15, end: 19 }),
+                    AST.StmtNode.asBlock({ start: 20, end: 22 }, [])
+                )
+            },
         ],
 
         FnStmtMustFails: [
@@ -258,19 +280,6 @@
                     {
                         span    : { start: 18, end: 23 },
                         msg     : "Expected `!` after error type",
-                    }
-                ]
-            },
-
-            // ! without error type
-            {
-                name: '! without error type',
-                input: 'fn  main  ( )   ->  !  void  {} ',
-                success: false,
-                output: [
-                    {
-                        span    : { start: 20, end: 21 },
-                        msg     : "Expected error type before `!`",
                     }
                 ]
             },

@@ -382,6 +382,11 @@
                                 }
                             }
 
+                            // default error type
+                            if(isNotSign && !errorType) {
+                                errorType = AST.TypeNode.asErr();
+                            }
+
                             let lastElemSpan = data.span;
                             {
                                 if(returnType) {
@@ -449,13 +454,14 @@
                                 } as ParseError;
                             }
 
-                            // `!` without error type
-                            if (!errorType && isNotSign) {
-                                throw {
-                                    msg: "Expected error type before `!`",
-                                    span: notSignSpan,
-                                } as ParseError;
-                            }
+                            // will never happend after this update.
+                            // // `!` without error type
+                            // if (!errorType && isNotSign) {
+                            //     throw {
+                            //         msg: "Expected error type before `!`",
+                            //         span: notSignSpan,
+                            //     } as ParseError;
+                            // }
 
                             // Invalid Error type
                             if(errorType && !errorType!.isErrset() && !errorType!.isErr() && !errorType!.isIdent()) {

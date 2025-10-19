@@ -55,6 +55,18 @@
                     AST.TypeNode.asIdentifier({ start: 8, end: 13 }, 'Error')
                 ),
             },
+
+            // AFTER UPDATE: should be default error type
+            // ! without error type
+            {
+                name: '! without error type',
+                input: 'fn() -> !void',
+                success: true,
+                output: AST.TypeNode.asFunction({ start: 0, end: 13 }, [],
+                    AST.TypeNode.asVoid({ start: 9, end: 13 }),
+                    AST.TypeNode.asErr()
+                ),
+            },
         ],
 
         FnTypeMustFails: [
@@ -121,17 +133,6 @@
                 output: [{
                     msg: "Expected `!` after error type",
                     span: { start: 8, end: 13 }
-                }]
-            },
-
-            // ! without error type
-            {
-                name: '! without error type',
-                input: 'fn() -> !void',
-                success: false,
-                output: [{
-                    msg: "Expected error type before `!`",
-                    span: { start: 8, end: 9 }
                 }]
             },
 

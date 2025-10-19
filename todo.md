@@ -6,9 +6,11 @@
 
     - fix : `str` should be `slice`.
 
-- ## Current
+    - add : default function error type `err` e.g. `fn x() !void {}` same as `err!void` (`err` here can be any error)
 
     - fix : in `lsp_rules.ts` fix wrong examples/description/signature.
+
+- ## Current
 
 - ## Later
 

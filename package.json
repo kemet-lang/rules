@@ -1,6 +1,6 @@
 {
 	"name": "@kemet-lang/rules",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"description": "Parser rules and grammar definitions for the Kemet programming language.",
 	"keywords": [
 		"kemet",
