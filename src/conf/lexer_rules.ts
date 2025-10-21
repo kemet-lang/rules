@@ -76,7 +76,6 @@
         continue        : 'continue',
 
         match          : 'match',
-        // case            : 'case',
         default         : 'default',
 
         comptime        : 'comptime',

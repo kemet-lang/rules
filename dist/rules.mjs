@@ -53,7 +53,6 @@ var lexerRules = {
   break: "break",
   continue: "continue",
   match: "match",
-  // case            : 'case',
   default: "default",
   comptime: "comptime",
   // ═══ Types ═══
@@ -186,8 +185,7 @@ var lspConfig = {
     controlFlow: [
       "if",
       "else",
-      "switch",
-      "case",
+      "match",
       "default",
       "for",
       "while",
@@ -419,19 +417,19 @@ var lspConfig = {
       signature: "else",
       description: "Alternative branch for if statement"
     },
-    "switch": {
-      signature: "switch expr { case value: stmt ... [default: stmt] }",
-      description: "Switch statement for pattern matching. Must be exhaustive for enum types or include default case.",
-      example: 'switch (value) {\n  case 1: { @print("one"); }\n  case 2: { @print("two"); }\n  default: { @print("other"); }\n}'
+    "match": {
+      signature: "match expr { value => stmt ... [default => stmt] }",
+      description: "Match statement for pattern matching. Must be exhaustive for enum types or include default case.",
+      example: 'match (value) {\n  1 => { @print("one"); }\n  2 => { @print("two"); }\n  default: { @print("other"); }\n}'
     },
     "case": {
-      signature: "case value: stmt",
-      description: "Case branch in switch statement",
-      example: 'case 42: { @print("found"); }'
+      signature: "value => stmt",
+      description: "Case branch in match statement",
+      example: '42 => { @print("found"); }'
     },
     "default": {
       signature: "default: stmt",
-      description: "Default case in switch statement (fallback when no other case matches)"
+      description: "Default case in match statement (fallback when no other case matches)"
     },
     "while": {
       signature: "while condition stmt",

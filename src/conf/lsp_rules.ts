@@ -41,7 +41,7 @@
             ],
 
             controlFlow: [
-                'if', 'else', 'switch', 'case', 'default',
+                'if', 'else', 'match', 'default',
                 'for', 'while', 'do',
                 'break', 'continue', 'return', 'defer', 'throw'
             ],
@@ -295,21 +295,21 @@
                 description: 'Alternative branch for if statement'
             },
 
-            'switch': {
-                signature: 'switch expr { case value: stmt ... [default: stmt] }',
-                description: 'Switch statement for pattern matching. Must be exhaustive for enum types or include default case.',
-                example: 'switch (value) {\n  case 1: { @print("one"); }\n  case 2: { @print("two"); }\n  default: { @print("other"); }\n}'
+            'match': {
+                signature: 'match expr { value => stmt ... [default => stmt] }',
+                description: 'Match statement for pattern matching. Must be exhaustive for enum types or include default case.',
+                example: 'match (value) {\n  1 => { @print("one"); }\n  2 => { @print("two"); }\n  default: { @print("other"); }\n}'
             },
 
             'case': {
-                signature: 'case value: stmt',
-                description: 'Case branch in switch statement',
-                example: 'case 42: { @print("found"); }'
+                signature: 'value => stmt',
+                description: 'Case branch in match statement',
+                example: '42 => { @print("found"); }'
             },
 
             'default': {
                 signature: 'default: stmt',
-                description: 'Default case in switch statement (fallback when no other case matches)'
+                description: 'Default case in match statement (fallback when no other case matches)'
             },
 
             'while': {
@@ -456,7 +456,7 @@
 
         // ═══ Builtin Documentation ═══
         builtinDocs: {
-            '@print': 
+            '@print':
                 '```kemet\nfn @print(text: any) -> void\n```\n\n' +
                 'Built-in function to print text to standard output.\n\n' +
                 '**Example:**\n```kemet\n@print("Hello, World!");\n@print(42);\n```',
