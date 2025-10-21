@@ -45,10 +45,13 @@
                             const exprResult    = seq_array[1];
                             const expr = exprResult.getCustomData()! as AST.ExprNode;
 
+                            let final_expr = expr;
+                            while(final_expr.isParen()) final_expr = final_expr.getParen()!.source;
+
                         // ══════ Syntax validation ══════
 
                             // if sizeof and non-type expre
-                            if(specialType === 'sizeof' && !expr.isType()) {
+                            if(specialType === 'sizeof' && !final_expr.isType()) {
                                 throw {
                                     msg: "Expected type expression after `sizeof`",
                                     span: expr.span,

@@ -624,7 +624,9 @@ var Expr = [
         const specialSan = isSpecial ? seq_array[0].getOptionalResult().getChoiceResult().span : void 0;
         const exprResult = seq_array[1];
         const expr = exprResult.getCustomData();
-        if (specialType === "sizeof" && !expr.isType()) {
+        let final_expr = expr;
+        while (final_expr.isParen()) final_expr = final_expr.getParen().source;
+        if (specialType === "sizeof" && !final_expr.isType()) {
           throw {
             msg: "Expected type expression after `sizeof`",
             span: expr.span

@@ -16,6 +16,8 @@
 
     - change : `case x :` to `x =>`
 
+    - fix : `sizeof x` ok, but `sizeof(x)` bug.
+
 - ## Current
 
 - ## Later
