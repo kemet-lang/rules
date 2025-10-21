@@ -12,6 +12,10 @@
 
     - fix : paren type
 
+    - change : `switch` to `match`
+
+    - change : `case x :` to `x =>`
+
 - ## Current
 
 - ## Later

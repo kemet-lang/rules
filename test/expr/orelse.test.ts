@@ -115,7 +115,7 @@
                 )
             },
 
-            // Null coalescing with member access - this shows wrong precedence, should be fixed
+            // Null coalescing with member access
             {
                 input: 'user.name ?? "Anonymous"',
                 success     : true,

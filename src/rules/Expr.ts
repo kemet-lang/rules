@@ -306,7 +306,7 @@
             ParserLib.createRule('ControlFlowExpr',
                 ParserLib.choice(
                     ParserLib.rule('IfExpr'),
-                    ParserLib.rule('SwitchExpr'),
+                    ParserLib.rule('MatchExpr'),
                     ParserLib.rule('AssignmentExpr')
                 ),
                 {
@@ -386,10 +386,10 @@
                 }
             ),
 
-            ParserLib.createRule('SwitchExpr',
+            ParserLib.createRule('MatchExpr',
                 ParserLib.seq(
-                    // switch <catchPoint>
-                    ParserLib.token('switch'),
+                    // match <catchPoint>
+                    ParserLib.token('match'),
                     // expression
                     ParserLib.optional(ParserLib.rule('Expr')),
                     // {
@@ -408,42 +408,42 @@
 
                             const seq_array = data.getSequenceResult()!;
 
-                            const isSwitchExpr      = seq_array[1].isOptionalPassed();
+                            const isMatchExpr       = seq_array[1].isOptionalPassed();
                             const isOpeningParen    = seq_array[2].isOptionalPassed();
                             const isCases           = seq_array[3].getRepeatCount()! > 0;
                             const isDefaultCase     = seq_array[4].isOptionalPassed();
                             const isClosingParen    = seq_array[5].isOptionalPassed();
 
-                            const switchSpan        = seq_array[0].span;
+                            const matchSpan         = seq_array[0].span;
                             const openingParenSpan  = isOpeningParen ? seq_array[2].span : undefined;
                             const closingParenSpan  = isClosingParen ? seq_array[5].span : undefined;
 
-                            const switchExpr        = isSwitchExpr ? seq_array[1].getOptionalResult()!.getCustomData()! as AST.ExprNode : undefined;
+                            const matchExpr         = isMatchExpr ? seq_array[1].getOptionalResult()!.getCustomData()! as AST.ExprNode : undefined;
                             const casesArray        = isCases ? seq_array[3].getRepeatResult()!.map(member => member.getCustomData()! as AST.CaseNode) : [];
                             const defaultCase       = isDefaultCase ? seq_array[4].getOptionalResult()!.getCustomData()! as AST.DefaultNode : null;
 
                         // ══════ Syntax validation ══════
 
-                            // Missing switch expression
-                            if(!isSwitchExpr) {
+                            // Missing match expression
+                            if(!isMatchExpr) {
                                 throw {
-                                    msg: "Expected expression after `switch` keyword",
-                                    span: switchSpan,
+                                    msg: "Expected expression after `match` keyword",
+                                    span: matchSpan,
                                 } as ParseError;
                             }
 
                             // Missing opening parenthesis
                             if(!isOpeningParen) {
                                 throw {
-                                    msg: "Expected `{` after switch expression",
-                                    span: switchExpr!.span,
+                                    msg: "Expected `{` after match expression",
+                                    span: matchExpr!.span,
                                 } as ParseError;
                             }
 
-                            // Missing switch cases
+                            // Missing match cases
                             if(!isCases && !isDefaultCase) {
                                 throw {
-                                    msg: "Expected switch cases",
+                                    msg: "Expected match cases",
                                     span: openingParenSpan,
                                 } as ParseError;
                             }
@@ -458,14 +458,14 @@
                                 }
 
                                 throw {
-                                    msg: "Expected `}` after switch cases",
+                                    msg: "Expected `}` after match cases",
                                     span: last_span,
                                 } as ParseError;
                             }
 
                         // ══════ Build AST ══════
 
-                            const result = AST.ExprNode.asSwitch(data.span, switchExpr!, casesArray, defaultCase);
+                            const result = AST.ExprNode.asMatch(data.span, matchExpr!, casesArray, defaultCase);
                             return ParserLib.Result.createAsCustom('passed', 'switch-expr', result, data.span);
                     },
                 }
@@ -473,12 +473,10 @@
 
             ParserLib.createRule('Case',
                 ParserLib.seq(
-                    // case <catchPoint>
-                    ParserLib.token('case'),
-                    // expression
-                    ParserLib.optional(ParserLib.rule('Expr')),
-                    // :
-                    ParserLib.optional(ParserLib.token(':')),
+                    // expression <catchPoint>
+                    ParserLib.rule('Expr'),
+                    // =>
+                    ParserLib.optional(ParserLib.token('=>')),
                     // statement
                     ParserLib.optional(ParserLib.rule('Stmt'))
                 ),
@@ -489,29 +487,19 @@
 
                             const seq_array = data.getSequenceResult()!;
 
-                            const isCaseExpr    = seq_array[1].isOptionalPassed();
-                            const isColon       = seq_array[2].isOptionalPassed();
-                            const isStmt        = seq_array[3].isOptionalPassed();
+                            const isArrow       = seq_array[1].isOptionalPassed();
+                            const isStmt        = seq_array[2].isOptionalPassed();
 
-                            const caseSpan      = seq_array[0].span;
-                            const caseExpr      = isCaseExpr ? seq_array[1].getOptionalResult()!.getCustomData()! as AST.ExprNode : undefined;
-                            const colonSpan     = isColon ? seq_array[2].span : undefined;
-                            const stmt          = isStmt ? seq_array[3].getOptionalResult()!.getCustomData()! as AST.StmtNode : null;
+                            const caseExpr      = seq_array[0].getCustomData()! as AST.ExprNode;
+                            const arrowSpan     = isArrow ? seq_array[1].span : undefined;
+                            const stmt          = isStmt ? seq_array[2].getOptionalResult()!.getCustomData()! as AST.StmtNode : null;
 
                         // ══════ Syntax validation ══════
 
-                            // Missing case expression
-                            if(!isCaseExpr) {
+                            // Missing arrow
+                            if(!isArrow) {
                                 throw {
-                                    msg: "Expected expression after `case` keyword",
-                                    span: caseSpan,
-                                } as ParseError;
-                            }
-
-                            // Missing colon
-                            if(!isColon) {
-                                throw {
-                                    msg: "Expected colon after expression",
+                                    msg: "Expected arrow after expression",
                                     span: caseExpr!.span,
                                 } as ParseError;
                             }
@@ -519,8 +507,8 @@
                             // Missing statement
                             if(!isStmt) {
                                 throw {
-                                    msg: "Expected statement after colon",
-                                    span: colonSpan,
+                                    msg: "Expected statement after arrow",
+                                    span: arrowSpan,
                                 } as ParseError;
                             }
 
@@ -536,8 +524,8 @@
                 ParserLib.seq(
                     // default <catchPoint>
                     ParserLib.token('default'),
-                    // :
-                    ParserLib.optional(ParserLib.token(':')),
+                    // =>
+                    ParserLib.optional(ParserLib.token('=>')),
                     // statement
                     ParserLib.optional(ParserLib.rule('Stmt'))
                 ),
@@ -548,19 +536,19 @@
 
                             const seq_array = data.getSequenceResult()!;
 
-                            const isColon       = seq_array[1].isOptionalPassed();
+                            const isArrow       = seq_array[1].isOptionalPassed();
                             const isStmt        = seq_array[2].isOptionalPassed();
 
                             const defaultSpan   = seq_array[0].span;
-                            const colonSpan     = isColon ? seq_array[1].span : undefined;
+                            const arrowSpan     = isArrow ? seq_array[1].span : undefined;
                             const stmt          = isStmt ? seq_array[2].getOptionalResult()!.getCustomData()! as AST.StmtNode : null;
 
                         // ══════ Syntax validation ══════
 
-                            // Missing colon
-                            if(!isColon) {
+                            // Missing arrow
+                            if(!isArrow) {
                                 throw {
-                                    msg: "Expected colon after `default` keyword",
+                                    msg: "Expected arrow after `default` keyword",
                                     span: defaultSpan,
                                 } as ParseError;
                             }
@@ -568,8 +556,8 @@
                             // Missing statement
                             if(!isStmt) {
                                 throw {
-                                    msg: "Expected statement after colon",
-                                    span: colonSpan,
+                                    msg: "Expected statement after arrow",
+                                    span: arrowSpan,
                                 } as ParseError;
                             }
 
@@ -603,16 +591,6 @@
                 {
                     build: (data: ParserLib.Result) => {
                         const seq_array = data.getSequenceResult()!;
-                        // // ✅ ENHANCED DEBUG
-                        // console.log('AssignmentExpr build called:', {
-                        //     hasOptional: seq_array[1].isOptionalPassed(),
-                        //     leftKind: (seq_array[0].getCustomData()! as AST.ExprNode).kind,
-                        //     leftSpan: seq_array[0].span,
-                        //     optionalSpan: seq_array[1].span,
-                        //     fullSpan: data.span,
-                        //     // Try to peek at what tokens follow
-                        //     rawData: JSON.stringify(seq_array[1])
-                        // });
 
                         if(!seq_array[1].isOptionalPassed()) return seq_array[0];
 

@@ -1,4 +1,4 @@
-// switch.test.ts
+// match.test.ts
 //
 // Developed with ❤️ by Maysara.
 
@@ -17,21 +17,21 @@
 
     const cases = {
 
-        SwitchExprMustSucceed: [
-            // Simple switch with one case
+        MatchExprMustSucceed: [
+            // Simple match with one case
             {
-                name: 'switch expression with one case',
-                input: 'switch x { case 1: { "one" } }',
+                name: 'match expression with one case',
+                input: 'match x { 1 => { "one" } }',
                 success: true,
-                output: AST.ExprNode.asSwitch(
-                    { start: 0, end: 30 },
-                    AST.ExprNode.asIdent({ start: 7, end: 8 }, 'x'),
+                output: AST.ExprNode.asMatch(
+                    { start: 0, end: 26 },
+                    AST.ExprNode.asIdent({ start: 6, end: 7 }, 'x'),
                     [
                         AST.CaseNode.create(
-                            { start: 11, end: 28 },
-                            AST.ExprNode.asInteger({ start: 16, end: 17 }, 1),
-                            AST.StmtNode.asBlock({ start: 19, end: 28 }, [
-                                AST.StmtNode.asExpr({ start: 21, end: 26 }, AST.ExprNode.asString({ start: 21, end: 26 }, 'one'))
+                            { start: 10, end: 24 },
+                            AST.ExprNode.asInteger({ start: 10, end: 11 }, 1),
+                            AST.StmtNode.asBlock({ start: 15, end: 24 }, [
+                                AST.StmtNode.asExpr({ start: 17, end: 22 }, AST.ExprNode.asString({ start: 17, end: 22 }, 'one'))
                             ])
                         )
                     ],
@@ -41,17 +41,17 @@
 
             // Simple with default
             {
-                name: 'switch expression with default',
-                input: 'switch x { default: { "default" } }',
+                name: 'match expression with default',
+                input: 'match x { default => { "default" } }',
                 success: true,
-                output: AST.ExprNode.asSwitch(
-                    { start: 0, end: 35 },
-                    AST.ExprNode.asIdent({ start: 7, end: 8 }, 'x'),
+                output: AST.ExprNode.asMatch(
+                    { start: 0, end: 36 },
+                    AST.ExprNode.asIdent({ start: 6, end: 7 }, 'x'),
                     [],
                     AST.DefaultNode.create(
-                        { start: 11, end: 33 },
-                        AST.StmtNode.asBlock({ start: 20, end: 33 }, [
-                            AST.StmtNode.asExpr({ start: 22, end: 31 }, AST.ExprNode.asString({ start: 22, end: 31 }, 'default'))
+                        { start: 10, end: 34 },
+                        AST.StmtNode.asBlock({ start: 21, end: 34 }, [
+                            AST.StmtNode.asExpr({ start: 23, end: 32 }, AST.ExprNode.asString({ start: 23, end: 32 }, 'default'))
                         ]),
                         undefined
                     )
@@ -60,92 +60,81 @@
 
         ],
 
-        SwitchExprMustFails: [
+        MatchExprMustFails: [
             // Missing expression
             {
                 name: 'Missing expression',
-                input: 'switch',
+                input: 'match',
                 success: false,
                 output: [{
-                    msg: "Expected expression after `switch` keyword",
-                    span: { start: 0, end: 6 }
+                    msg: "Expected expression after `match` keyword",
+                    span: { start: 0, end: 5 }
                 }]
             },
 
             // Missing open brace
             {
                 name: 'Missing open brace',
-                input: 'switch x',
+                input: 'match x',
                 success: false,
                 output: [{
-                    msg: "Expected `{` after switch expression",
-                    span: { start: 7, end: 8 }
+                    msg: "Expected `{` after match expression",
+                    span: { start: 6, end: 7 }
                 }]
             },
 
             // Missing cases
             {
                 name: 'Missing cases',
-                input: 'switch x {}',
+                input: 'match x {}',
                 success: false,
                 output: [{
-                    msg: "Expected switch cases",
-                    span: { start: 9, end: 10 } // TODO: start from `{` end with `}`
+                    msg: "Expected match cases",
+                    span: { start: 8, end: 9 } // TODO: start from `{` end with `}`
                 }]
             },
 
-            // Case missing expression
+            // Case missing arrow
             {
-                name: 'Case missing expression',
-                input: 'switch x { case: { "one" } }',
+                name: 'Case missing arrow',
+                input: 'match x { 1  { "one" } }',
                 success: false,
                 output: [{
-                    msg: "Expected expression after `case` keyword",
-                    span: { start: 11, end: 15 }
-                }]
-            },
-
-            // Case missing colon
-            {
-                name: 'Case missing colon',
-                input: 'switch x { case 1 { "one" } }',
-                success: false,
-                output: [{
-                    msg: "Expected colon after expression",
-                    span: { start: 16, end: 17 }
+                    msg: "Expected arrow after expression",
+                    span: { start: 10, end: 11 }
                 }]
             },
 
             // Case missing statement
             {
                 name: 'Case missing statement',
-                input: 'switch x { case 1: }',
+                input: 'match x { 1 => }',
                 success: false,
                 output: [{
-                    msg: "Expected statement after colon",
-                    span: { start: 17, end: 18 }
+                    msg: "Expected statement after arrow",
+                    span: { start: 12, end: 14 }
                 }]
             },
 
-            // Default missing colon
+            // Default missing arrow
             {
-                name: 'Default missing colon',
-                input: 'switch x { default { "one" } }',
+                name: 'Default missing arrow',
+                input: 'match x { default { "one" } }',
                 success: false,
                 output: [{
-                    msg: "Expected colon after `default` keyword",
-                    span: { start: 11, end: 18 }
+                    msg: "Expected arrow after `default` keyword",
+                    span: { start: 10, end: 17 }
                 }]
             },
 
             // Default missing statement
             {
                 name: 'Default missing statement',
-                input: 'switch x { default: }',
+                input: 'match x { default => }',
                 success: false,
                 output: [{
-                    msg: "Expected statement after colon",
-                    span: { start: 18, end: 19 }
+                    msg: "Expected statement after arrow",
+                    span: { start: 18, end: 20 }
                 }]
             },
         ]

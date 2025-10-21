@@ -75,8 +75,8 @@
         break           : 'break',
         continue        : 'continue',
 
-        switch          : 'switch',
-        case            : 'case',
+        match          : 'match',
+        // case            : 'case',
         default         : 'default',
 
         comptime        : 'comptime',
@@ -98,6 +98,7 @@
 
         // ═══ Operators ═══
         '->'            : '->',     // Function Return operator
+        '=>'            : '=>',     // Match case operator
         '.*'            : '.*',     // Dereference operator
         '??'            : '??',     // Null coalescing operator
         '..='           : '..=',    // Range operator (Inclusive)
