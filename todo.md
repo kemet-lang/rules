@@ -18,6 +18,9 @@
 
     - fix : `sizeof x` ok, but `sizeof(x)` bug.
 
+    - fix : change `ArrayType` to use `BaseType` instead of `Type` for the element type.
+        > Apply the same fix to: `PointerType`, `OptionalType` and `EnumVariant`.
+
 - ## Current
 
 - ## Later

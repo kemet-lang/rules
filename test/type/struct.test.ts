@@ -156,7 +156,7 @@
                 input: 'struct',
                 success: false,
                 output: [{
-                    msg: "Expected '{' after `struct` keyword",
+                    msg: "Expected '{' to begin struct body",
                     span: { start: 6, end: 7 }
                 }]
             },
@@ -176,7 +176,7 @@
                 input: 'struct x: i32',
                 success: false,
                 output: [{
-                    msg: "Expected '{' after `struct` keyword",
+                    msg: "Expected '{' to begin struct body",
                     span: { start: 6, end: 7 }
                 }]
             },

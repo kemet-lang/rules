@@ -2951,7 +2951,7 @@ var Type = [
         const members = membersCount > 0 ? seq_array[2].getRepeatResult().map((member) => member.getCustomData()) : [];
         if (!isOpeningParen) {
           throw {
-            msg: "Expected '{' after `struct` keyword",
+            msg: "Expected '{' to begin struct body",
             span: {
               start: structSpan.end,
               end: structSpan.end + 1
@@ -3051,7 +3051,7 @@ var Type = [
       // :
       ParserLib3.optional(ParserLib3.token(`:`)),
       // type
-      ParserLib3.optional(ParserLib3.rule("Type"))
+      ParserLib3.optional(ParserLib3.rule("BaseType"))
     ),
     {
       build: (data, parser) => {
@@ -3299,7 +3299,7 @@ var Type = [
     "OptionalType",
     ParserLib3.seq(
       ParserLib3.token("?"),
-      ParserLib3.rule("Type")
+      ParserLib3.rule("BaseType")
     ),
     {
       build: (data) => {
@@ -3319,7 +3319,7 @@ var Type = [
     ParserLib3.seq(
       ParserLib3.token("*"),
       ParserLib3.optional(ParserLib3.token("mut")),
-      ParserLib3.rule("Type")
+      ParserLib3.rule("BaseType")
     ),
     {
       build: (data) => {
@@ -3443,7 +3443,7 @@ var Type = [
       ParserLib3.optional(ParserLib3.rule("Expr")),
       ParserLib3.token("]"),
       ParserLib3.optional(ParserLib3.token("mut")),
-      ParserLib3.rule("Type")
+      ParserLib3.rule("BaseType")
     ),
     {
       build: (data) => {

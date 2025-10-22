@@ -124,7 +124,7 @@
                             // Missing `{`
                             if(!isOpeningParen) {
                                 throw {
-                                    msg: "Expected '{' after `struct` keyword",
+                                    msg: "Expected '{' to begin struct body",
                                     span: {
                                         start: structSpan.end,
                                         end: structSpan.end + 1,
@@ -268,7 +268,7 @@
                     // :
                     ParserLib.optional(ParserLib.token(`:`)),
                     // type
-                    ParserLib.optional(ParserLib.rule('Type')),
+                    ParserLib.optional(ParserLib.rule('BaseType')),
                 ),
                 {
                     build: (data: ParserLib.Result, parser: ParserLib.Parser) => {
@@ -611,7 +611,7 @@
             ParserLib.createRule('OptionalType',
                 ParserLib.seq(
                     ParserLib.token('?'),
-                    ParserLib.rule('Type')
+                    ParserLib.rule('BaseType')
                 ),
                 {
                     build: (data: ParserLib.Result) => {
@@ -633,7 +633,7 @@
                 ParserLib.seq(
                     ParserLib.token('*'),
                     ParserLib.optional(ParserLib.token('mut')),
-                    ParserLib.rule('Type')
+                    ParserLib.rule('BaseType')
                 ),
                 {
                     build: (data: ParserLib.Result) => {
@@ -770,7 +770,7 @@
                     ParserLib.optional(ParserLib.rule('Expr')),
                     ParserLib.token(']'),
                     ParserLib.optional(ParserLib.token('mut')),
-                    ParserLib.rule('Type')
+                    ParserLib.rule('BaseType')
                 ),
                 {
                     build: (data: ParserLib.Result) => {
