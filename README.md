@@ -257,18 +257,18 @@
             | else stmt                 # Else
             ```
 
-        - #### [8] Switch
+        - #### [8] Match
 
             ```bash
-            | switch expr { ... }       # Switch
+            | match expr { ... }        # Match
             | [^]                       # Previous
             ```
 
-            > inside **switch** :
+            > inside **match** :
 
             ```bash
-            | case expr: stmt           # SwitchCase
-            | default: stmt             # DefaultSwitchCase
+            | expr    => stmt           # match case
+            | default => stmt           # default match case
             ```
 
 
