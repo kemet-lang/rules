@@ -30,14 +30,17 @@
         dec             : /[0-9]+/,
         slice           : { match: /"(?:[^"\\]|\\.)*"/, value: (text: string) => text.slice(1, -1) },
         char            : { match: /'(?:[^'\\]|\\.)*'/, value: (text: string) => text.slice(1, -1) },
+
+        // ═══ Keywords ═══
         true            : 'true',
         false           : 'false',
         null            : 'null',
         null_t          : 'null_t',
         und             : 'und',
         und_t           : 'und_t',
+        noreturn        : 'noreturn',
+        unreachable     : 'unreachable',
 
-        // ═══ Keywords ═══
         test            : 'test',
         new             : 'new',
         try             : 'try',
@@ -49,7 +52,6 @@
         def             : 'def',
         let             : 'let',
         fn              : 'fn',
-        unreachable     : 'unreachable',
 
         mut             : 'mut',
         inline          : 'inline',

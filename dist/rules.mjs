@@ -16,13 +16,15 @@ var lexerRules = {
   dec: /[0-9]+/,
   slice: { match: /"(?:[^"\\]|\\.)*"/, value: (text) => text.slice(1, -1) },
   char: { match: /'(?:[^'\\]|\\.)*'/, value: (text) => text.slice(1, -1) },
+  // ═══ Keywords ═══
   true: "true",
   false: "false",
   null: "null",
   null_t: "null_t",
   und: "und",
   und_t: "und_t",
-  // ═══ Keywords ═══
+  noreturn: "noreturn",
+  unreachable: "unreachable",
   test: "test",
   new: "new",
   try: "try",
@@ -34,7 +36,6 @@ var lexerRules = {
   def: "def",
   let: "let",
   fn: "fn",
-  unreachable: "unreachable",
   mut: "mut",
   inline: "inline",
   static: "static",
@@ -549,10 +550,15 @@ var lspConfig = {
       signature: "und",
       description: "Undefined value (uninitialized). Can be assigned to optional types."
     },
-    // More
+    // unreachable expr
     "unreachable": {
       signature: "unreachable",
       description: "Unreachable expression. Panics if reached."
+    },
+    // noreturn type
+    "noreturn": {
+      signature: "noreturn",
+      description: "Type for functions that never return"
     }
   },
   // ═══ Builtin Documentation ═══
@@ -3320,6 +3326,7 @@ var Type = [
     "PrimitiveType",
     ParserLib3.choice(
       // Basic types
+      ParserLib3.token("noreturn"),
       ParserLib3.token("type"),
       ParserLib3.token("void"),
       ParserLib3.token("bool"),
@@ -3347,6 +3354,9 @@ var Type = [
         if (selected.isToken()) {
           const token5 = selected.getTokenData();
           switch (token5.kind) {
+            case "noreturn":
+              type = AST3.TypeNode.asNoreturn(token5.span);
+              break;
             case "type":
               type = AST3.TypeNode.asType(token5.span);
               break;

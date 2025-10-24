@@ -1112,6 +1112,7 @@
                     build: (data: ParserLib.Result) => ParserLib.Result.createAsCustom('passed', 'unreachable-expr', AST.ExprNode.asUnreachable(data.span), data.span)
                 }
             ),
+
             ParserLib.createRule('ParenExpr',
                 ParserLib.seq(
                     ParserLib.token('('),

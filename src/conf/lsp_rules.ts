@@ -453,10 +453,16 @@
                 description: 'Undefined value (uninitialized). Can be assigned to optional types.'
             },
 
-            // More
+            // unreachable expr
             'unreachable': {
                 signature: 'unreachable',
                 description: 'Unreachable expression. Panics if reached.'
+            },
+
+            // noreturn type
+            'noreturn': {
+                signature: 'noreturn',
+                description: 'Type for functions that never return'
             }
         },
 

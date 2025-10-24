@@ -20,6 +20,11 @@
         PrimitiveTypes: [
             // Basic types
             {
+                input: 'noreturn',
+                success: true,
+                output: AST.TypeNode.asNoreturn({ start: 0, end: 8 }),
+            },
+            {
                 input: 'type',
                 success: true,
                 output: AST.TypeNode.asType({ start: 0, end: 4 }),

@@ -657,6 +657,7 @@
             ParserLib.createRule('PrimitiveType',
                 ParserLib.choice(
                     // Basic types
+                    ParserLib.token('noreturn'),
                     ParserLib.token('type'),
                     ParserLib.token('void'),
                     ParserLib.token('bool'),
@@ -690,6 +691,9 @@
                         if (selected.isToken()) {
                             const token = selected.getTokenData()!;
                             switch (token.kind) {
+                                case 'noreturn':
+                                    type = AST.TypeNode.asNoreturn(token.span);
+                                    break;
                                 case 'type':
                                     type = AST.TypeNode.asType(token.span);
                                     break;
