@@ -2,6 +2,8 @@
 
     ...
 
+    - add : `unreachable` expression.
+
 - ## Current
 
 - ## Later

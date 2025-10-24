@@ -49,6 +49,7 @@
         def             : 'def',
         let             : 'let',
         fn              : 'fn',
+        unreachable     : 'unreachable',
 
         mut             : 'mut',
         inline          : 'inline',

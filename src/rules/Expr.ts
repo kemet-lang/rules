@@ -957,6 +957,7 @@
 
             ParserLib.createRule('PrimaryExpr',
                 ParserLib.choice(
+                    ParserLib.rule('UnreachableExpr'),
                     ParserLib.rule('ParenExpr'),
                     ParserLib.rule('TupleExpr'),
                     ParserLib.rule('ObjectExpr'),
@@ -1105,6 +1106,12 @@
                 }
             ),
 
+            ParserLib.createRule('UnreachableExpr',
+                ParserLib.token('unreachable'),
+                {
+                    build: (data: ParserLib.Result) => ParserLib.Result.createAsCustom('passed', 'unreachable-expr', AST.ExprNode.asUnreachable(data.span), data.span)
+                }
+            ),
             ParserLib.createRule('ParenExpr',
                 ParserLib.seq(
                     ParserLib.token('('),

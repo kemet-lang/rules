@@ -68,6 +68,7 @@ var lexerRules = {
   def: "def",
   let: "let",
   fn: "fn",
+  unreachable: "unreachable",
   mut: "mut",
   inline: "inline",
   static: "static",
@@ -581,6 +582,11 @@ var lspConfig = {
     "und": {
       signature: "und",
       description: "Undefined value (uninitialized). Can be assigned to optional types."
+    },
+    // More
+    "unreachable": {
+      signature: "unreachable",
+      description: "Unreachable expression. Panics if reached."
     }
   },
   // ═══ Builtin Documentation ═══
@@ -1338,6 +1344,7 @@ var Expr = [
   ParserLib.createRule(
     "PrimaryExpr",
     ParserLib.choice(
+      ParserLib.rule("UnreachableExpr"),
       ParserLib.rule("ParenExpr"),
       ParserLib.rule("TupleExpr"),
       ParserLib.rule("ObjectExpr"),
@@ -1464,6 +1471,13 @@ var Expr = [
       errors: [
         ParserLib.error(0, "Expected literal expression")
       ]
+    }
+  ),
+  ParserLib.createRule(
+    "UnreachableExpr",
+    ParserLib.token("unreachable"),
+    {
+      build: (data) => ParserLib.Result.createAsCustom("passed", "unreachable-expr", AST.ExprNode.asUnreachable(data.span), data.span)
     }
   ),
   ParserLib.createRule(

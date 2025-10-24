@@ -451,6 +451,12 @@
             'und': {
                 signature: 'und',
                 description: 'Undefined value (uninitialized). Can be assigned to optional types.'
+            },
+
+            // More
+            'unreachable': {
+                signature: 'unreachable',
+                description: 'Unreachable expression. Panics if reached.'
             }
         },
 
