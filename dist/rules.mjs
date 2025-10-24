@@ -438,8 +438,8 @@ var lspConfig = {
     },
     "for": {
       signature: "for range stmt",
-      description: "Iterate over a range. Use @i to access current iteration index.",
-      example: "for (0..10) {\n  @print(@i);\n}"
+      description: "Iterate over a range. Use @i(level=0) to access current iteration index.",
+      example: "for (0..10) {\n  @print(@i());\n}"
     },
     "do": {
       signature: "do stmt while condition",
@@ -552,7 +552,7 @@ var lspConfig = {
   // ═══ Builtin Documentation ═══
   builtinDocs: {
     "@print": '```kemet\nfn @print(text: any) -> void\n```\n\nBuilt-in function to print text to standard output.\n\n**Example:**\n```kemet\n@print("Hello, World!");\n@print(42);\n```',
-    "@i": "```kemet\n@i: usize\n```\n\nLoop iteration index (available in `for` loops).\n\n**Example:**\n```kemet\nfor (0..10) {\n  @print(@i); // prints 0, 1, 2, ..., 9\n}\n```",
+    "@i": "```kemet\nfn @i(text: any) -> void\n```\n\nLoop iteration index (available in `for` loops).\n\n**Example:**\n```kemet\nfor (0..10) {\n  @print(@i(0)); // prints 0, 1, 2, ..., 9\n}\n```",
     "@assert": '```kemet\nfn @assert(condition: bool) -> void\n```\n\nBuilt-in assertion function for testing. Panics if condition is false.\n\n**Example:**\n```kemet\ntest "math" {\n  @assert(1 + 1 == 2);\n  @assert(5 * 5 == 25);\n}\n```',
     "self": "```kemet\nself\n```\n\nReference to the current instance (available in struct methods). Static methods can only use `self` to access static members.\n\n**Example:**\n```kemet\nstruct {\n  x: i32;\n  y: i32;\n  \n  fn distance(self) -> f32 {\n    return sqrt(self.x * self.x + self.y * self.y);\n  }\n  \n  static count: i32 = 0;\n  static fn getCount() -> i32 {\n    return self.count; // OK: accessing static member\n  }\n}\n```",
     "selferr": "```kemet\nselferr\n```\n\nReference to the function's self-group error set. Only available in functions with inline error set syntax (errset{...}!).\n\n**Example:**\n```kemet\nfn process() -> errset{IOError, ParseError}!void {\n  if (failed) {\n    throw selferr.IOError;\n  }\n}\n```"

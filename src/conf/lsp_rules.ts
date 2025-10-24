@@ -320,8 +320,8 @@
 
             'for': {
                 signature: 'for range stmt',
-                description: 'Iterate over a range. Use @i to access current iteration index.',
-                example: 'for (0..10) {\n  @print(@i);\n}'
+                description: 'Iterate over a range. Use @i(level=0) to access current iteration index.',
+                example: 'for (0..10) {\n  @print(@i());\n}'
             },
 
             'do': {
@@ -462,9 +462,9 @@
                 '**Example:**\n```kemet\n@print("Hello, World!");\n@print(42);\n```',
 
             '@i':
-                '```kemet\n@i: usize\n```\n\n' +
+                '```kemet\nfn @i(text: any) -> void\n```\n\n' +
                 'Loop iteration index (available in `for` loops).\n\n' +
-                '**Example:**\n```kemet\nfor (0..10) {\n  @print(@i); // prints 0, 1, 2, ..., 9\n}\n```',
+                '**Example:**\n```kemet\nfor (0..10) {\n  @print(@i(0)); // prints 0, 1, 2, ..., 9\n}\n```',
 
             '@assert':
                 '```kemet\nfn @assert(condition: bool) -> void\n```\n\n' +
